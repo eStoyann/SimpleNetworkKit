@@ -12,10 +12,7 @@ public protocol HTTPService: Sendable {
     func fetch<Response>(_ endpoint: HTTPEndpoint,
                          type: Response.Type,
                          receiveOn queue: DispatchQueue,
-                         validator: HTTPURLResponseValidatable,
                          _ finished: @escaping @Sendable (HTTPResult<Response, Error>) -> Void) where Response: Codable, Response: Sendable
-    func fetch<Response>(_ endpoint: HTTPEndpoint,
-                                validator: HTTPURLResponseValidatable) async throws -> Response where Response: Decodable
 }
 public final class HTTPManager: HTTPService {
     private let client: HTTPClient
@@ -30,16 +27,14 @@ public final class HTTPManager: HTTPService {
     public func fetch<Response>(_ endpoint: HTTPEndpoint,
                                 type: Response.Type,
                                 receiveOn queue: DispatchQueue,
-                                validator: HTTPURLResponseValidatable = HTTPURLResponseValidator(),
                                 _ finished: @escaping @Sendable (HTTPResult<Response, Error>) -> Void) where Response : Decodable, Response : Encodable, Response: Sendable {
         do {
             let request = try endpoint.request()
             let task = client.fetch(request: request) {[weak self] result in
                 guard let self else {return}
                 switch result {
-                case let .success((data, httpResponse)):
+                case let .success((data, _)):
                     do {
-                        try validator.validate(httpResponse)
                         let decodedResponse = try decoder.decode(Response.self, from: data)
                         queue.async {
                             finished(.success(decodedResponse))
@@ -61,13 +56,5 @@ public final class HTTPManager: HTTPService {
                 finished(.failure(error))
             }
         }
-    }
-    public func fetch<Response>(_ endpoint: HTTPEndpoint,
-                                validator: HTTPURLResponseValidatable = HTTPURLResponseValidator()) async throws -> Response where Response: Decodable {
-        let request = try endpoint.request()
-        let (data, httpResponse) = try await client.fetch(request)
-        try validator.validate(httpResponse)
-        let response = try decoder.decode(Response.self, from: data)
-        return response
     }
 }
