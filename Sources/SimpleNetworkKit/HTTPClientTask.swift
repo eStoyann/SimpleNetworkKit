@@ -9,6 +9,7 @@
 import Foundation
 
 public protocol HTTPClientTask {
+    var status: URLSessionTask.State {get}
     func stop()
     func start()
 }
