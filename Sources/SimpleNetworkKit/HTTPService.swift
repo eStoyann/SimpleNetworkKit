@@ -13,7 +13,7 @@ public protocol HTTPService: Sendable {
                          type: Response.Type,
                          receiveOn queue: DispatchQueue,
                          validator: HTTPURLResponseValidatable,
-                         _ finished: @escaping @Sendable (HTTPResult<Response>) -> Void) where Response: Codable, Response: Sendable
+                         _ finished: @escaping @Sendable (HTTPResult<Response, Error>) -> Void) where Response: Codable, Response: Sendable
     func fetch<Response>(_ endpoint: HTTPEndpoint,
                                 validator: HTTPURLResponseValidatable) async throws -> Response where Response: Decodable
 }
@@ -31,7 +31,7 @@ public final class HTTPManager: HTTPService {
                                 type: Response.Type,
                                 receiveOn queue: DispatchQueue,
                                 validator: HTTPURLResponseValidatable = HTTPURLResponseValidator(),
-                                _ finished: @escaping @Sendable (HTTPResult<Response>) -> Void) where Response : Decodable, Response : Encodable, Response: Sendable {
+                                _ finished: @escaping @Sendable (HTTPResult<Response, Error>) -> Void) where Response : Decodable, Response : Encodable, Response: Sendable {
         do {
             let request = try endpoint.request()
             let task = client.fetch(request: request) {[weak self] result in
