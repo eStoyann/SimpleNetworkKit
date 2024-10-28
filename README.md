@@ -1,5 +1,4 @@
 # SimpleNetworkKit
-SimpleNetworkKit is a lightweight networking library designed to simplify HTTP networking tasks in Swift. With a clean, intuitive API, it abstracts complex networking operations, making it easier to integrate and handle requests, responses, and data parsing. Ideal for Swift developers seeking a minimalistic, yet powerful tool for network communication in iOS and macOS apps.
 
 Features
 
