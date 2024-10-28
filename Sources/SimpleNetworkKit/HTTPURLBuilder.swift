@@ -13,7 +13,7 @@ public protocol HTTPURLBuilder {
 }
 
 public struct URLBuilder: HTTPURLBuilder {
-    typealias QueryParameters = [String: String]
+    public typealias QueryParameters = [String: String]
     private var components: URLComponents
     
     public var url: URL? {
