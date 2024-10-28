@@ -8,13 +8,8 @@
 
 import Foundation
 
-public enum HTTPHeader: String {
-    case contentType = "Content-Type"
-    
-    public var value: String {
-        switch self {
-        case .contentType:
-            return "application/json"
-        }
-    }
-}
+public typealias HTTPHeaderKey = String
+public typealias HTTPHeaderValue = String
+public typealias HTTPHeaders = [HTTPHeaderKey: HTTPHeaderValue]
+public let cHTTPHeaderContentTypeKey: HTTPHeaderKey = "Content-Type"
+public let cHTTPHeaderContentTypeValue: HTTPHeaderValue = "application/json"

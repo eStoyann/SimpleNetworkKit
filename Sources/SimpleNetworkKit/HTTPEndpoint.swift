@@ -14,15 +14,15 @@ public protocol HTTPEndpoint {
 public struct Endpoint: HTTPEndpoint {
     public let builder: HTTPURLBuilder
     public let httpMethod: HTTPMethod
-    public let httpHeaders: [HTTPHeader]
+    public let httpHeaders: HTTPHeaders
     public let timeoutInterval: TimeInterval
     public let cachePolicy: URLRequest.CachePolicy
     
     public init(urlBuilder: HTTPURLBuilder,
-         httpMethod: HTTPMethod = .get,
-         httpHeaders: [HTTPHeader] = [.contentType],
-         cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy,
-         timeoutInterval: TimeInterval = 60) {
+                httpMethod: HTTPMethod = .get,
+                httpHeaders: HTTPHeaders = [cHTTPHeaderContentTypeKey: cHTTPHeaderContentTypeValue],
+                cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy,
+                timeoutInterval: TimeInterval = 60) {
         self.builder = urlBuilder
         self.httpMethod = httpMethod
         self.httpHeaders = httpHeaders
@@ -39,7 +39,7 @@ public struct Endpoint: HTTPEndpoint {
                                  timeoutInterval: timeoutInterval)
         request.httpMethod = httpMethod.value
         httpHeaders.forEach { header in
-            request.addValue(header.value, forHTTPHeaderField: header.rawValue)
+            request.addValue(header.value, forHTTPHeaderField: header.key)
         }
         if let httpBody = httpMethod.httpBody {
             request.httpBody = try httpBody.create()
