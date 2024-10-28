@@ -5,7 +5,6 @@
 //  Created by Evgeniy Stoyan on 28.10.2024.
 //
 import Foundation
-import SimpleNetworkKit
 
 public final class HTTPValidatedClient: HTTPClient {
     private let client: HTTPClient
@@ -18,7 +17,7 @@ public final class HTTPValidatedClient: HTTPClient {
     }
     
     public func fetch(request: URLRequest,
-               _ finished: @escaping CompletionHandler) -> HTTPURLSessionTask {
+               _ finished: @escaping CompletionHandler) -> HTTPClientTask {
         client.fetch(request: request) {[weak self] result in
             guard let self else {return}
             switch result {
