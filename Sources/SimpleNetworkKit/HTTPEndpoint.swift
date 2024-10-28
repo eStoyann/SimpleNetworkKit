@@ -18,7 +18,7 @@ public struct Endpoint: HTTPEndpoint {
     public let timeoutInterval: TimeInterval
     public let cachePolicy: URLRequest.CachePolicy
     
-    init(urlBuilder: HTTPURLBuilder,
+    public init(urlBuilder: HTTPURLBuilder,
          httpMethod: HTTPMethod = .get,
          httpHeaders: [HTTPHeader] = [.contentType],
          cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy,

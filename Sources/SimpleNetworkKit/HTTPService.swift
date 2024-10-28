@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol HTTPService: Sendable {
-    func fetch<Response>(endpoint: HTTPEndpoint,
+    func fetch<Response>(_ endpoint: HTTPEndpoint,
                          type: Response.Type,
                          receiveOn queue: DispatchQueue,
                          validator: HTTPURLResponseValidatable,
@@ -27,7 +27,7 @@ public final class HTTPManager: HTTPService {
         self.decoder = decoder
     }
     @preconcurrency
-    public func fetch<Response>(endpoint: HTTPEndpoint,
+    public func fetch<Response>(_ endpoint: HTTPEndpoint,
                                 type: Response.Type,
                                 receiveOn queue: DispatchQueue,
                                 validator: HTTPURLResponseValidatable = HTTPURLResponseValidator(),

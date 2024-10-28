@@ -19,7 +19,7 @@ public struct URLBuilder: HTTPURLBuilder {
     public var url: URL? {
         components.url
     }
-    init(scheme: HTTPScheme = .https,
+    public init(scheme: HTTPScheme = .https,
          host: String,
          path: String,
          queryParameters: QueryParameters? = nil) {
