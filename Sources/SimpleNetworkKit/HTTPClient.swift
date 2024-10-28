@@ -12,7 +12,6 @@ public protocol HTTPClient: Sendable {
     typealias CompletionHandler = @Sendable (Result<(Data, HTTPURLResponse), Error>) -> Void
     func fetch(request: URLRequest,
                _ finished: @escaping CompletionHandler) -> HTTPURLSessionTask
-    func fetch(_ request: URLRequest) async throws -> (Data, HTTPURLResponse)
 }
 //common usage
 //just run request and get response data
@@ -34,16 +33,6 @@ extension URLSession: HTTPClient {
             }
             finished(.success((data, httpResponse)))
         }
-    }
-    public func fetch(_ request: URLRequest) async throws -> (Data, HTTPURLResponse) {
-        let (data, response) = try await data(for: request)
-        guard !data.isEmpty else {
-            throw URLError(.dataNotAllowed)
-        }
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw URLError(.badServerResponse)
-        }
-        return (data, httpResponse)
     }
 }
 
