@@ -1,5 +1,5 @@
 //
-//  HTTPURLSessionTask.swift
+//  HTTPClientTask.swift
 //  NetworkRouter
 //
 //  Created by Evgeniy Stoyan on 09.09.2024.
@@ -8,16 +8,19 @@
 
 import Foundation
 
-public protocol HTTPURLSessionTask {
+public protocol HTTPClientTask {
     func stop()
     func start()
 }
 
-extension URLSessionTask: HTTPURLSessionTask {
+extension URLSessionTask: HTTPClientTask {
     public func stop() {
         cancel()
     }
     public func start() {
         resume()
+    }
+    public var status: URLSessionTask.State {
+        state
     }
 }
