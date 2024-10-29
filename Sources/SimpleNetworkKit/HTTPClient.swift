@@ -10,8 +10,7 @@ import Foundation
 
 public protocol HTTPClient: Sendable {
     typealias CompletionHandler = @Sendable (Result<(Data, HTTPURLResponse), Error>) -> Void
-    func fetch(request: URLRequest,
-               _ finished: @escaping CompletionHandler) -> HTTPClientTask
+    func fetch(request: URLRequest, _ finished: @escaping CompletionHandler) -> HTTPClientTask
 }
 //common usage
 //just run request and get response data

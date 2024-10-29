@@ -14,6 +14,7 @@ public protocol HTTPService: Sendable {
                          receiveOn queue: DispatchQueue,
                          _ finished: @escaping @Sendable (HTTPResult<Response, Error>) -> Void) where Response: Codable, Response: Sendable
 }
+
 public final class HTTPManager: HTTPService {
     private let client: HTTPClient
     private let decoder: JSONDecoder
@@ -23,11 +24,11 @@ public final class HTTPManager: HTTPService {
         self.client = client
         self.decoder = decoder
     }
-    @preconcurrency
+    
     public func fetch<Response>(_ endpoint: HTTPEndpoint,
                                 type: Response.Type,
                                 receiveOn queue: DispatchQueue,
-                                _ finished: @escaping @Sendable (HTTPResult<Response, Error>) -> Void) where Response : Decodable, Response : Encodable, Response: Sendable {
+                                _ finished: @escaping @Sendable (HTTPResult<Response, Error>) -> Void) where Response: Codable, Response: Sendable {
         do {
             let request = try endpoint.request()
             let task = client.fetch(request: request) {[weak self] result in
